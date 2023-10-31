@@ -16,9 +16,9 @@ export const App = () => {
   const [filter, setFilter] = useState('');
 
   useEffect(() => {
-    const storageContacts = JSON.parse(window.localStorage.getItem('contacts'));
-    if (storageContacts && storageContacts.length) {
-      setContacts(storageContacts);
+    const contacts = JSON.parse(window.localStorage.getItem('contacts'));
+    if (contacts?.length) {
+      setContacts(contacts);
     }
   }, []);
 
@@ -29,24 +29,27 @@ export const App = () => {
     window.localStorage.setItem('contacts', JSON.stringify(contacts));
   }, [contacts]);
 
-  const handleAddContact = contact => {
-    const id = nanoid();
-    const newContact = { ...contact, id };
-    if (
-      contacts.some(el => el.name.toLowerCase() === contact.name.toLowerCase())
-    ) {
-      alert(`${contact.name} is already exist`);
-      return;
+  const handleAddContact = newContact => {
+    // const id = nanoid();
+    // const newContact = { ...contact, id };
+    const existContact = contacts.some(
+      contact => contact.name.toLowerCase() === newContact.name.toLowerCase()
+    );
+
+    if (existContact) {
+      alert(`${newContact.name} is already exist`);
     } else {
       setContacts(prev => [...prev, ...newContact]);
     }
   };
 
-  const handleFilterChange = filterValue => setFilter(filterValue);
+  const handleFilterChange = e => {
+    setFilter(e.target.value);
+  };
 
   const getfilteredContacts = () => {
     return contacts.filter(contact =>
-      contact.name.toLowerCase().includes(filter.toLowerCase())
+      contact.name.trim().toLowerCase().includes(filter.trim().toLowerCase())
     );
   };
 
@@ -59,7 +62,7 @@ export const App = () => {
   return (
     <Container>
       <Title>Phonebook</Title>
-      <InputContacts onAddContact={handleAddContact} />
+      <InputContacts onAddContact={handleAddContact} contacts={contacts} />
 
       <h2>Contacts</h2>
       <Filter filter={filter} onChangeValue={handleFilterChange} />

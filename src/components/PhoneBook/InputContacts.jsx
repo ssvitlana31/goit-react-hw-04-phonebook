@@ -1,32 +1,37 @@
 import React from 'react';
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-
 import { Form, Label, Input, Button } from './Form.styled';
+import { nanoid } from 'nanoid';
 
-export const InputContacts = ({ onAddContact }) => {
+export const InputContacts = ({ onAddContact, contacts }) => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
   const handleSubmit = e => {
     e.preventDefault();
-    onAddContact(name, number);
+    const contact = {
+      number: number.trim(),
+      name: name.trim(),
+      id: nanoid(),
+    };
+
+    if (!name.trim()) {
+      return;
+    }
+
+    onAddContact(contact);
+
     setName('');
     setNumber('');
   };
 
   const handleInputChange = e => {
     const { name, value } = e.target;
-    switch (name) {
-      case 'name':
-        setName(value);
-        break;
-      case 'number':
-        setNumber(value);
-        break;
-
-      default:
-        break;
+    if (name === 'name') {
+      setName(value);
+    } else if (name === 'number') {
+      setNumber(value);
     }
   };
 
