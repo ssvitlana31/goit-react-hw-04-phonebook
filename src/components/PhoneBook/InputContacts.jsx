@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Form, Label, Input, Button } from './Form.styled';
 import { nanoid } from 'nanoid';
 
-export const InputContacts = ({ onAddContact, contacts }) => {
+export const InputContacts = ({ onAddContact }) => {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 

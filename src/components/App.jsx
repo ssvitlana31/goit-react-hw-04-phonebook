@@ -16,48 +16,40 @@ export const App = () => {
   const [filter, setFilter] = useState('');
 
   useEffect(() => {
-    const contacts = JSON.parse(window.localStorage.getItem('contacts'));
-    if (contacts?.length) {
-      setContacts(contacts);
+    const storageContacts = JSON.parse(window.localStorage.getItem('contacts'));
+    if (storageContacts) {
+      setContacts(storageContacts);
     }
   }, []);
 
   useEffect(() => {
-    if (!contacts.length) {
-      return;
-    }
     window.localStorage.setItem('contacts', JSON.stringify(contacts));
   }, [contacts]);
 
   const handleAddContact = newContact => {
-    // const id = nanoid();
-    // const newContact = { ...contact, id };
-    const existContact = contacts.some(
-      contact => contact.name.toLowerCase() === newContact.name.toLowerCase()
-    );
-
-    if (existContact) {
-      alert(`${newContact.name} is already exist`);
-    } else {
-      setContacts(prev => [...prev, ...newContact]);
-    }
+    const res = contacts.some(el => el.name === newContact.name);
+    res
+      ? alert(`Name ${newContact.name} has already in the list`)
+      : setContacts(prevState => [
+          ...prevState,
+          { id: nanoid(), ...newContact },
+        ]);
   };
-
-  const handleFilterChange = e => {
-    setFilter(e.target.value);
-  };
-
   const getfilteredContacts = () => {
     return contacts.filter(contact =>
       contact.name.trim().toLowerCase().includes(filter.trim().toLowerCase())
     );
   };
 
+  const handleFilterChange = e => {
+    setFilter(e.target.value);
+  };
+
   const handleDeleteContact = id => {
     setContacts(prev => prev.filter(contact => contact.id !== id));
   };
 
-  const filteredContacts = getfilteredContacts();
+  const filteredContacts = getfilteredContacts(contacts);
 
   return (
     <Container>
