@@ -19,7 +19,7 @@ export const App = () => {
       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
     ];
   });
-  const [filter, setFilter] = useState('');
+  const [filterEL, setFilterEL] = useState('');
 
   useEffect(() => {
     window.localStorage.setItem('contacts', JSON.stringify(contacts));
@@ -35,13 +35,13 @@ export const App = () => {
         ]);
   };
   const getfilteredContacts = () => {
-    return contacts.filter(contact =>
-      contact.name.trim().toLowerCase().includes(filter.trim().toLowerCase())
+    return contacts.filter(el =>
+      el.name.toLowerCase().includes(filterEL.toLowerCase())
     );
   };
 
   const handleFilterChange = e => {
-    setFilter(e.target.value);
+    setFilterEL(e.target.value);
   };
 
   const handleDeleteContact = id => {
@@ -56,11 +56,11 @@ export const App = () => {
       <InputContacts onAddContact={handleAddContact} contacts={contacts} />
 
       <h2>Contacts</h2>
-      <Filter filter={filter} onChangeValue={handleFilterChange} />
+      <Filter filter={filterEL} onChangeValue={handleFilterChange} />
       <Contacts
         options={filteredContacts}
         contacts={contacts}
-        filter={filter}
+        filter={filterEL}
         onDeleteContact={handleDeleteContact}
       />
     </Container>

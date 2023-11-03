@@ -8,9 +8,9 @@ export const Filter = ({ filter, onChangeValue }) => {
     <div>
       <FilterInput
         type="text"
-        placeholder="Write contact"
+        name="filter"
         value={filter}
-        onChange={e => onChangeValue(e.target.value)}
+        onChange={onChangeValue}
       />
     </div>
   );
